@@ -1,7 +1,7 @@
 {
   "name": "strings-parser-path",
   "description": "Parser for strings to handle file path parsing.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/assemble/strings-parser-path",
   "author": {
     "name": "Brian Woodward",
