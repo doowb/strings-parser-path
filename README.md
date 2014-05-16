@@ -13,16 +13,20 @@ npm i strings-parser-path --save
 Add as a `strings` parser:
 
 ```js
+var Strings = require('strings');
 var path = require('strings-parser-path');
+
 var strings = new Strings();
 strings.parser('path', path());
-var dest = strings.template(':basename/index:ext', 'path',
-{filepath: 'path/to/file.html'});
-```
 
-Expected results for `dest`:
-```js
-'file/index.html'
+var context = {
+  filepath: 'path/to/file.html'
+};
+var template = ':basename/index:ext';
+var dest = strings.template(template, 'path', context);
+
+// expected: ':basename/index:ext'
+console.log(dest);
 ```
 
 ## Author
