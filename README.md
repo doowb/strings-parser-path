@@ -6,8 +6,24 @@
 Install with [npm](npmjs.org):
 
 ```bash
-npm i strings-parser-path --save-dev
+npm i strings-parser-path --save
 ``` 
+
+## Usage
+Add as a `strings` parser:
+
+```js
+var path = require('strings-parser-path');
+var strings = new Strings();
+strings.parser('path', path());
+var dest = strings.template(':basename/index:ext', 'path',
+{filepath: 'path/to/file.html'});
+```
+
+Expected results for `dest`:
+```js
+'file/index.html'
+```
 
 ## Author
 
