@@ -1,55 +1,46 @@
-
 /**
- * Assemble
+ * strings-parser-path <https://github.com/assemble/strings-parser-path>
  *
- * Assemble <http://www.assemble.io>
- * Created and maintained by Jon Schlinkert and Brian Woodward
- *
- * Copyright (c) 2014 Assemble.
+ * Copyright (c) 2014 Jon Schlinkert and Brian Woodward
  * Licensed under the MIT License (MIT).
  */
 
-var expect = require('chai').expect;
+'use strict';
 
+var expect = require('chai').expect;
 var Strings = require('strings');
-var path = require('../');
+var parsePath = require('parse-filepath');
+var parser = require('../');
 
 describe('parsers', function() {
-
   describe('path', function() {
 
-    var filepath = '/path/to/foo.html';
-    var strings = null;
+    var filepath = 'a/b/c.html';
+    var strings = new Strings();
+    strings.parser('path', parser(filepath));
 
-    before(function(){
-      strings = new Strings();
-      strings.parser('path', path());
-    });
-
-    it('should replace :basename', function() {
-      var expected = 'foo';
-      var actual = strings.template(':basename', 'path', {filepath: filepath});
+    it('should replace :dirname', function() {
+      var expected = 'a/b';
+      var actual = strings.process(':dirname', ['path']);
       expect(actual).to.eql(expected);
     });
 
-    it('should replace :filename', function() {
-      var expected = 'foo.html';
-      var actual = strings.template(':filename', 'path', {filepath: filepath});
+    it('should replace :basename', function() {
+      var expected = 'c.html';
+      var actual = strings.process(':basename', ['path']);
+      expect(actual).to.eql(expected);
+    });
+
+    it('should replace :extname', function() {
+      var expected = '.html';
+      var actual = strings.process(':extname', ['path']);
       expect(actual).to.eql(expected);
     });
 
     it('should replace :ext', function() {
       var expected = '.html';
-      var actual = strings.template(':ext', 'path', {filepath: filepath});
+      var actual = strings.process(':ext', ['path']);
       expect(actual).to.eql(expected);
     });
-
-    it('should replace dir', function() {
-      var expected = '/path/to';
-      var actual = strings.template(':dir', 'path', {filepath: filepath});
-      expect(actual).to.eql(expected);
-    });
-
   });
-
 });

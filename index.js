@@ -1,6 +1,5 @@
-
 /**
- * Strings <https://github.com/assemble/strings>
+ * strings-parser-path <https://github.com/assemble/strings-parser-path>
  *
  * Copyright (c) 2014 Jon Schlinkert and Brian Woodward
  * Licensed under the MIT License (MIT).
@@ -9,26 +8,36 @@
 'use strict';
 
 var path = require('path');
+var parsePath = require('parse-filepath');
 
-function paths(options) {
+module.exports = function pathParser(filepath) {
+  var context = parsePath(filepath);
+  context.ext = context.extname || '';
 
-  options = options || {};
-
-  return {
-    ':basename': function () {
-      var filepath = this.filepath || options.filepath || '';
-      return path.basename(filepath, path.extname(filepath));
+  return [
+    {
+      pattern: /:dirname/,
+      replacement: function() {
+        return this.dirname || context.dirname;
+      }
     },
-    ':filename': function () {
-      return path.basename(this.filepath || options.filepath || '');
+    {
+      pattern: /:basename/,
+      replacement: function() {
+        return this.basename || context.basename;
+      }
     },
-    ':ext': function () {
-      return path.extname(this.filepath || options.filepath || '');
+    {
+      pattern: /:extname/,
+      replacement: function() {
+        return this.extname || context.extname;
+      }
     },
-    ':dir': function () {
-      return path.dirname(this.filepath || options.filepath || '');
+    {
+      pattern: /:ext/,
+      replacement: function() {
+        return this.ext || context.ext;
+      }
     }
-  };
-}
-
-module.exports = paths;
+  ];
+};
